@@ -12,15 +12,12 @@ int main()
 	int n = 0, k = 0;
 	cin >> n >> k;
 
-	vector<string> medal(n + 1, "");
-	for (int y = 0; y < n; y++)
+	vector<vector<int>> medal(n + 1, vector<int>(4, 0));
+	for (int i = 0; i < n; i++)
 	{
-		char s = ' ';
-		for (int x = 0; x < 4; x++)
+		for (int j = 0; j < 4; j++)
 		{
-			cin >> s;
-
-			medal[y].push_back(s);
+			cin >> medal[i][j];
 		}
 	}
 
@@ -42,18 +39,29 @@ int main()
 			}
 		}
 	}
-	int cnt = 1;
+
+	int ret = 1;
+	int cnt = 0;
 	for (int i = 0; i < n; i++)
 	{
-		if (medal[i][0] - '0' == k)
+		if (medal[i][0] == k)
 			break;
 
-		if (medal[i].substr(1, 3) == medal[i + 1].substr(1, 3))
-			continue;
-		else
+		if ((medal[i][1] == medal[i + 1][1]) && (medal[i][2] == medal[i + 1][2])
+			&& (medal[i][3] == medal[i + 1][3]))
 			cnt++;
+		else
+		{
+			if (cnt == 0)
+				ret++;
+			else
+			{
+				ret += (cnt + 1);
+				cnt = 0;
+			}
+		}
 	}
-	cout << cnt;
+	cout << ret;
 
 	return 0;
 }
