@@ -4,21 +4,13 @@ using namespace std;
 
 int M, N, K;
 vector<vector<int>> graph;
-vector<vector<bool>> visited;
 
-int dy[4] = { -1, 0, 1, 0 };
+int dy[4] = { -1, 0, 1, 0 };  // 상하좌우
 int dx[4] = { 0,-1, 0, 1 };
-
-
-/*
-if ((yy < 0 || N <= yy) || (xx < 0 || M <= xx)
-	|| visited[yy][xx] == true
-	|| graph[yy][xx] == 0)
-	continue;
-*/
 
 void dfs(int y, int x)
 {
+	// 탐색한 곳을 0으로 바꿔줌
 	graph[y][x] = 0;
 
 	for (int i = 0; i < 4; i++)
@@ -47,9 +39,8 @@ int main()
 	{
 		cin >> M >> N >> K;
 
+		graph.clear();
 		graph.resize(N, vector<int>(M, 0));
-		visited.resize(N, vector<bool>(M, false));
-
 		for (int i = 0; i < K; i++)
 		{
 			int y = 0, x = 0;
@@ -71,11 +62,6 @@ int main()
 			}
 		}
 		cout << cnt << '\n';
-
-		graph.clear();
-		visited.clear();
-		cnt = 0;
 	}
-
 	return 0;
 }
