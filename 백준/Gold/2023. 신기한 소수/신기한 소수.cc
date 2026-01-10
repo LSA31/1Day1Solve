@@ -1,8 +1,11 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-int n;
+vector<int> ret;
+int prime[5] = { 1,3,5,7,9 };
+int N;
 
 bool isPrime(int num)
 {
@@ -13,22 +16,18 @@ bool isPrime(int num)
 	}
 	return true;
 }
-void DFS(int num, int jarisu)
+void dfs(int num, int jarisu)
 {
-	if (jarisu == n)
+	if (jarisu == N)
 	{
-		if (isPrime(num))
-		{
-			cout << num << '\n';
-		}
+		ret.push_back(num);  //마지막에도 소수인지 검사해야되나??
 		return;
 	}
-	for (int i = 1; i < 10; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		if (i % 2 == 0) // 짝수인 경우
-			continue;
-		if (isPrime(num * 10 + i))
-			DFS(num * 10 + i, jarisu + 1);
+		int t = num * 10 + prime[i];
+		if (isPrime(t) == true)
+			dfs(t, jarisu + 1);
 	}
 }
 int main()
@@ -37,10 +36,16 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n;
+	cin >> N;
 
-	DFS(2, 1);
-	DFS(3, 1);
-	DFS(5, 1);
-	DFS(7, 1);
+	dfs(2, 1);  // N의 자리가 2,3,5,7
+	dfs(3, 1);
+	dfs(5, 1);
+	dfs(7, 1);
+
+
+	for (int i = 0; i < ret.size(); i++)
+		cout << ret[i] << '\n';
+
+	return 0;
 }
