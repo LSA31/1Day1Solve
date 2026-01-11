@@ -2,25 +2,27 @@
 #include <vector>
 using namespace std;
 
-vector<vector<int>> vect;
+vector<vector<int>> friends;
 vector<bool> visited;
-bool arrive; // 도착 확인 변수
+bool flag;
 
-void DFS(int index, int depth)
+void dfs(int node, int cnt)  // 현재 노드, 조건 만족 수
 {
-	if (depth == 5 || arrive)
+	if (cnt == 4)  // 4가지 조건 모두 만족 시
 	{
-		arrive = true;
+		flag = true;
 		return;
 	}
-	visited[index] = true;
 
-	for (int i = 0; i < vect[index].size(); i++)
+	visited[node] = true;
+	
+	for (int i = 0; i < friends[node].size(); i++)
 	{
-		if (visited[vect[index][i]] == false)
-			DFS(vect[index][i], depth + 1);
+		int next = friends[node][i];
+		if (visited[next] == false)
+			dfs(next, cnt + 1);
 	}
-	visited[index] = false;
+	visited[node] = false;
 }
 int main()
 {
@@ -28,29 +30,31 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int n, m;
-	cin >> n >> m;
+	int N = 0, M = 0;
+	cin >> N >> M;
 
-	vect.resize(n + 1);
-	visited = vector<bool>(n + 1, false);
-
-	for (int i = 0; i < m; i++)
+	friends.resize(N);
+	visited.resize(N, false);
+	for (int i = 0; i < M; i++)
 	{
-		int index, value;
-		cin >> index >> value;
+		int a = 0, b = 0;
+		cin >> a >> b;
 
-		vect[index].push_back(value);
-		vect[value].push_back(index);
+		friends[a].push_back(b);
+		friends[b].push_back(a);
 	}
-	for (int i = 0; i < n; i++)
-	{
-		DFS(i, 1);
 
-		if (arrive)
+	for (int i = 0; i < N; i++)
+	{
+		dfs(i, 0);
+
+		if (flag == true)
 			break;
 	}
-	if (arrive)
-		cout << 1;
-	else
+	if (flag == false)
 		cout << 0;
+	else
+		cout << 1;
+
+	return 0;
 }
