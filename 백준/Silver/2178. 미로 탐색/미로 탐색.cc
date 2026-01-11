@@ -1,41 +1,38 @@
 #include <iostream>
+#include <vector>
 #include <queue>
+#include <string>
 using namespace std;
 
+int N, M;
+vector<vector<int>> maze;
+vector<vector<bool>> visited;
 int dx[4] = { 0,1,0,-1 };
-int dy[4] = { 1,0,-1,0 };
-int arr[101][101];
-bool visited[101][101] = { false };
-int n, m;
+int dy[4] = { -1,0,1,0 };
 
-void BFS(int i, int j)
+void bfs(int y, int x)
 {
 	queue<pair<int, int>> Q;
-
-	Q.push(make_pair(i, j));
-	visited[i][j] = true;
+	Q.push(make_pair(y, x));
+	visited[y][x] = true;
 
 	while (!Q.empty())
 	{
-		int now[2];
-		now[0] = Q.front().first;
-		now[1] = Q.front().second;
+		int now[2] = { Q.front().first, Q.front().second };
 		Q.pop();
 
-		for (int k = 0; k < 4; k++)
+		for (int i = 0; i < 4; i++)
 		{
-			int y = now[0] + dx[k];
-			int x = now[1] + dy[k];
+			int yy = now[0] + dy[i];
+			int xx = now[1] + dx[i];
 
-			if (0 <= y && y < n && 0 <= x && x < m)
-			{
-				if (arr[y][x] != 0 && !visited[y][x]) // 경로가 0이 아니고 방문한 적 없는 곳일 때
-				{
-					visited[y][x] = true;
-					arr[y][x] = arr[now[0]][now[1]] + 1;
-					Q.push(make_pair(y, x));
-				}
-			}
+			if (yy < 0 || N <= yy || xx < 0 || M <= xx  // 범위를 벗어나거나 이미 방문했거나 값이 0이라면
+				|| visited[yy][xx] == true || maze[yy][xx] == 0)
+				continue;
+
+			Q.push(make_pair(yy, xx));
+			visited[yy][xx] = true;
+			maze[yy][xx] = maze[now[0]][now[1]] + 1;
 		}
 	}
 }
@@ -45,17 +42,23 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> m;
-	for (int y = 0; y < n; y++)
+	cin >> N >> M;
+
+	maze.resize(N, vector<int>(M, 0));
+	visited.resize(N, vector<bool>(M, false));
+	for (int y = 0; y < N; y++)
 	{
-		string str;
+		string str = "";
 		cin >> str;
 
-		for (int x = 0; x < m; x++)
+		for (int x = 0; x < M; x++)
 		{
-			arr[y][x] = str[x] - '0';
+			maze[y][x] = str[x] - '0';
 		}
 	}
-	BFS(0, 0);
-	cout << arr[n - 1][m - 1];
+	bfs(0, 0);
+
+	cout << maze[N - 1][M - 1];
+
+	return 0;
 }
