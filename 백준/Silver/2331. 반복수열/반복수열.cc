@@ -44,15 +44,13 @@ int main()
 		check[next] = true;
 		index++;
 	}
-	int cnt = 0;
 	for (int i = 0; i < index; i++)
 	{
 		if (d[i] == d[index])
 		{
-			cout << cnt;
+			cout << i;
 			break;
 		}
-		cnt++;
 	}
 
 	return 0;
