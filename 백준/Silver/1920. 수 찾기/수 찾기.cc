@@ -9,7 +9,7 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int n, m;
+	int n = 0;
 	cin >> n;
 
 	vector<int> vect(n, 0);
@@ -18,32 +18,34 @@ int main()
 
 	sort(vect.begin(), vect.end());
 
-	cin >> m;
-	for (int i = 0; i < m; i++)
+	int find_cnt = 0;
+	cin >> find_cnt;
+	for (int i = 0; i < find_cnt; i++)
 	{
-		int target;
-		cin >> target;
+		int find = 0;
+		cin >> find;
 
 		int start = 0, end = n - 1;
-		bool find = false;
+		bool flag = false;
 		while (start <= end)
 		{
-			int mid_index = (start + end) / 2; // 중간값 인덱스
-			int mid = vect[mid_index]; // 중간값
+			int mid = (start + end) / 2;
+			int midV = vect[mid];
 
-			if (mid > target)
-				end = mid_index - 1;
-			else if (mid < target)
-				start = mid_index + 1;
-			else if (mid == target)
+			if (find == midV)
 			{
-				find = true;
+				flag = true;
+				cout << 1 << '\n';
 				break;
 			}
+			else if (find < midV)
+				end = mid - 1;
+			else if (find > midV)
+				start = mid + 1;
 		}
-		if (find)
-			cout << "1" << '\n';
-		else
-			cout << "0" << '\n';
+		if (flag == false)
+			cout << 0 << '\n';
 	}
+
+	return 0;
 }
