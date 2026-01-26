@@ -8,40 +8,41 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int n, m;
+	int n = 0, m = 0;
 	cin >> n >> m;
 
 	vector<int> vect(n, 0);
-	
-	int start = 0, end = 0;
+	int start = 0, end = 0;  // 강의 시간 최댓값, 강의 시간 총합
 	for (int i = 0; i < n; i++)
 	{
 		cin >> vect[i];
 
-		if (start < vect[i]) // 시작 인덱스: 레슨 최댓값
+		if (start < vect[i])
 			start = vect[i];
-		end += vect[i]; // 종료 인덱스: 레슨시간 총합
+		end += vect[i];
 	}
 	while (start <= end)
 	{
 		int mid = (start + end) / 2;
-		int sum = 0, count = 0; // 레슨시간 합, 사용한 블루레이 개수
+		int sum = 0, cnt = 0;  // 레슨 시간 합, 사용한 블루레이 개수
 
 		for (int i = 0; i < n; i++)
 		{
-			if (sum + vect[i] > mid) // 현재값을 더했을 때 중간값보다 크면 새로운 블루레이로 교체
+			if (sum + vect[i] > mid)
 			{
-				count++;
+				cnt++;
 				sum = 0;
 			}
-			sum += vect[i]; 
+			sum += vect[i];
 		}
 		if (sum != 0)
-			count++;
-		if (count > m)
+			cnt++;
+		if (cnt > m)
 			start = mid + 1;
 		else
 			end = mid - 1;
 	}
 	cout << start;
+
+	return 0;
 }
