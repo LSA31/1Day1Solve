@@ -14,7 +14,7 @@ int main()
 	LL n = 0;
 	cin >> n;
 
-	LL sum = 0;  // 예산 요청의 총합, 최댓값, 최솟값
+	LL sum = 0;  // 예산 요청의 총합
 	vector<LL> budget(n, 0);
 	for (LL i = 0; i < n; i++)
 	{
