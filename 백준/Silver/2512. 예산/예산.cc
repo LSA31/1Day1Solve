@@ -14,25 +14,24 @@ int main()
 	LL n = 0;
 	cin >> n;
 
-	LL sum = 0, Max = 0;  // 예산 요청의 총합, 최댓값, 최솟값
+	LL sum = 0;  // 예산 요청의 총합, 최댓값, 최솟값
 	vector<LL> budget(n, 0);
 	for (LL i = 0; i < n; i++)
 	{
 		cin >> budget[i];
 
-		if (Max < budget[i])
-			Max = budget[i];
 		sum += budget[i];
 	}
+	sort(budget.begin(), budget.end());
 	
 	LL m = 0;
 	cin >> m;
 
 	if (sum <= m)  // case 1
-		cout << Max;
+		cout << budget[n - 1];  // 최댓값
 	else  // case 2
 	{
-		LL start = 0, end = Max, ret = 0;
+		LL start = 0, end = budget[n - 1], ret = 0;
 		while (start <= end)
 		{
 			LL mid = (start + end) / 2;
@@ -46,9 +45,7 @@ int main()
 			else
 			{
 				start = (mid + 1);
-
-				if (ret < sum2) 
-					ret = mid;
+				ret = mid;
 			}
 		}
 		cout << ret;
