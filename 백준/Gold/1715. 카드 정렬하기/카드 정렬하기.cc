@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include <queue>
 using namespace std;
 
@@ -9,28 +8,28 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int n;
+	int n = 0;
 	cin >> n;
 
-	priority_queue<int, vector<int>, greater<int>> pq; // 우선순위 큐
+	priority_queue<int, vector<int>, greater<int>> pq;  // 오름차순
+	int t = 0;
 	for (int i = 0; i < n; i++)
 	{
-		int data;
-		cin >> data;
-
-		pq.push(data);
+		cin >> t;
+		pq.push(t);
 	}
 	int sum = 0;
-	while (pq.size() != 1)
+	while (pq.size() > 1)
 	{
-		int data1 = pq.top();
+		int first = pq.top();
+		pq.pop();
+		int second = pq.top();
 		pq.pop();
 
-		int data2 = pq.top();
-		pq.pop();
-
-		sum += (data1 + data2);
-		pq.push(data1 + data2);
+		sum += (first + second);
+		pq.push(first + second);
 	}
 	cout << sum;
+
+	return 0;
 }
