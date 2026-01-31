@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 int main()
@@ -9,59 +9,57 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int n;
+	int n = 0;
 	cin >> n;
 
-	priority_queue<int> plusQ;
-	priority_queue<int, vector<int>, greater<int>> minusQ;
-	int one = 0, zero = 0;
+	priority_queue<int> posi;  // 1보다 큰 양수
+	priority_queue<int, vector<int>, greater<int>> nega;  // 음수
+	int one = 0, zero = 0;  // 1, 0의 개수
+	int num = 0;
 	for (int i = 0; i < n; i++)
 	{
-		int data;
-		cin >> data;
+		cin >> num;
 
-		if (data > 1)
-			plusQ.push(data);
-		else if (data == 1)
+		if (num > 1)
+			posi.push(num);
+		else if (num < 0)
+			nega.push(num);
+		else if (num == 1)
 			one++;
-		else if (data == 0)
-			zero++;
 		else
-			minusQ.push(data);
+			zero++;
 	}
+
 	int sum = 0;
-	while (plusQ.size() > 1)
+	// 양수 처리
+	while (posi.size() > 1)
 	{
-		int first = plusQ.top();
-		plusQ.pop();
-		int second = plusQ.top();
-		plusQ.pop();
+		int first = posi.top();
+		posi.pop();
+		int second = posi.top();
+		posi.pop();
 
 		sum += (first * second);
 	}
-	if (!plusQ.empty())
+	if (!posi.empty())
+		sum += posi.top();
+
+	// 음수 처리
+	while (nega.size() > 1)
 	{
-		sum += plusQ.top();
-		plusQ.pop();
-	}
-	while (minusQ.size() > 1)
-	{
-		int first = minusQ.top();
-		minusQ.pop();
-		int second = minusQ.top();
-		minusQ.pop();
+		int first = nega.top();
+		nega.pop();
+		int second = nega.top();
+		nega.pop();
 
 		sum += (first * second);
 	}
-	if (!minusQ.empty())
-	{
-		if (zero == 0) // zero가 비어있지 않다면 (음수*0) 은 0이므로 sum 갱신 하지 않음
-		{
-			sum += minusQ.top();
-			minusQ.pop();
-		}
-	}
+	if ((!nega.empty()) && (zero == 0))
+		sum += nega.top();
+
 	sum += one;
 
 	cout << sum;
+
+	return 0;
 }
