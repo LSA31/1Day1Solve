@@ -1,62 +1,50 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cmath>
+#include <algorithm>  // reverse
 using namespace std;
 
-long arr[10000001];
+typedef long long LL;
 
-bool isPalindrom(int target)
-{
-	string str = to_string(target); // 정수형 문자열로 변환
-	vector<char> vect(str.length() + 1);
-	for (int i = 0; i < str.length(); i++) // 문자열 배열로 변환
-		vect[i] = str[i];
-
-	int s = 0, e = str.length() - 1;
-	while (s < e)
-	{
-		if (vect[s] != vect[e])
-			return false;
-
-		s++;
-		e--;
-	}
-	return true;
-}
 int main()
 {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int n;
+	LL n = 0;
 	cin >> n;
 
-	for (int i = 2; i < 10000001; i++)
-		arr[i] = i;
-
-	for (int i = 2; i <= sqrt(10000001); i++)
+	vector<int> vect(1003002, 0);
+	for (int i = 0; i < vect.size(); i++)
+		vect[i] = i;
+	for (int i = 2; i < vect.size(); i++)  // 에라토스테네스의 체
 	{
-		if (arr[i] == 0)
-			continue;
-
-		for (int j = i + i; j < 10000001; j += i)
+		if (vect[i] != -1)
 		{
-			arr[j] = 0;
-		}
-	}
-	int i = n;
-	while (true)
-	{
-		if (arr[i] != 0)
-		{
-			if (isPalindrom(arr[i]))
+			for (int j = i * 2; j < vect.size(); j += i)
 			{
-				cout << arr[i];
-				break;
+				vect[j] = -1;
 			}
 		}
-		i++;
 	}
+	vect[0] = -1;
+	vect[1] = -1;
+	for (LL i = n; i < vect.size(); i++)
+	{
+		if (vect[i] != -1)
+		{
+			string str = to_string(vect[i]);
+			string rev = str;
+			reverse(rev.begin(), rev.end());
+
+			if (str == rev)
+			{
+				cout << vect[i];
+				return 0;
+			}
+		}
+	}
+
+	return 0;
 }
