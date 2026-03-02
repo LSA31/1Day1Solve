@@ -2,6 +2,13 @@
 #include <algorithm>
 using namespace std;
 
+int GCD(int a, int b)
+{
+	if (a % b == 0)
+		return b;
+	else
+		return GCD(b, a % b);
+}
 int main()
 {
 	ios::sync_with_stdio(false);
@@ -10,19 +17,11 @@ int main()
 
 	int T = 0;
 	cin >> T;
-
 	for (int i = 0; i < T; i++)
 	{
 		int a = 0, b = 0;
 		cin >> a >> b;
 
-		int at = max(a, b), bt = min(a, b);
-		while (bt != 0)
-		{
-			int ret = at % bt;
-			at = bt;
-			bt = ret;
-		}
-		cout << a * b / at << '\n';
+		cout << a * b / GCD(a, b) << '\n';
 	}
 }
