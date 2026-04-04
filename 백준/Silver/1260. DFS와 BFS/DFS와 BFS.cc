@@ -1,43 +1,50 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
-vector<vector<int>> vect;
+int n, m, v;
+vector<vector<int>> graph;
 vector<bool> visited;
+vector<int> ret;
 
-void DFS(int index)
+void dfs(int node)
 {
-	cout << index << " ";
-	visited[index] = true;
+	visited[node] = true;
+	ret.push_back(node);
 
-	for (int i = 0; i < vect[index].size(); i++)
+	for (int i = 0; i < graph[node].size(); i++)
 	{
-		if (visited[vect[index][i]] == false)
-			DFS(vect[index][i]);
+		int next = graph[node][i];
+
+		if (!visited[next])
+			dfs(next);
 	}
 }
-void BFS(int index)
+void bfs(int start)
 {
-	queue<int> Q;
-	Q.push(index);
-	visited[index] = true;
+	queue<int> q;
+	q.push(start);
+	visited[start] = true;
 
-	while (!Q.empty())
+	while (!q.empty())
 	{
-		int now = Q.front();
-		Q.pop();
-		cout << now << " ";
+		int node = q.front();
+		q.pop();
+		ret.push_back(node);
 
-		for (int i = 0; i < vect[now].size(); i++)
+		for (int i = 0; i < graph[node].size(); i++)
 		{
-			if (visited[vect[now][i]] == false)
+			int next = graph[node][i];
+
+			if (!visited[next])
 			{
-				visited[vect[now][i]] = true;
-				Q.push(vect[now][i]);
+				q.push(next);
+				visited[next] = true;
 			}
 		}
+
 	}
 }
 int main()
@@ -46,25 +53,29 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int n, m, start;
-	cin >> n >> m >> start;
-
-	vect.resize(n + 1);
-	visited = vector<bool>(n + 1, false);
-
+	cin >> n >> m >> v;
+	graph.resize(n + 1);
+	visited.resize(n + 1, false);
 	for (int i = 0; i < m; i++)
 	{
-		int index, value;
-		cin >> index >> value;
+		int a = 0, b = 0;
+		cin >> a >> b;
 
-		vect[index].push_back(value);
-		vect[value].push_back(index);
+		graph[a].push_back(b);
+		graph[b].push_back(a);
 	}
 	for (int i = 1; i <= n; i++)
-		sort(vect[i].begin(), vect[i].end());
+		sort(graph[i].begin(), graph[i].end());
 
-	DFS(start);
+	dfs(v);
+	for (int i = 0; i < ret.size(); i++)
+		cout << ret[i] << ' ';
 	cout << '\n';
-	fill(visited.begin(), visited.end(), false); // visited배열 false로 초기화
-	BFS(start);
+
+	ret.clear();
+	visited.assign(n + 1, false);
+
+	bfs(v);
+	for (int i = 0; i < ret.size(); i++)
+		cout << ret[i] << ' ';
 }
