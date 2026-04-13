@@ -3,11 +3,11 @@
 #include <tuple>
 using namespace std;
 
-vector<bool> visited;
 vector<tuple<int, int, int>> graph[10];
+vector<bool> visited;
 int n;
-long lcm;  // 최소 공배수
-long D[10];  // 각 노드값 저장
+long lcm;
+long D[10];
 
 long GCD(long x, long y)
 {
@@ -25,7 +25,7 @@ void DFS(int node)
 		int next = get<0>(i);
 		if (!visited[next])
 		{
-			D[next] = D[node] * get<2>(i) / get<1>(i); 
+			D[next] = D[node] * get<2>(i) / get<1>(i);
 			DFS(next);
 		}
 	}
@@ -48,13 +48,13 @@ int main()
 		graph[a].push_back(make_tuple(b, p, q));
 		graph[b].push_back(make_tuple(a, q, p));
 
-		lcm *= (p * q / GCD(p, q));  // 최소 공배수 = 두 수의 곱을 최대 공약수로 나눈 것
+		lcm *= ((p * q) / GCD(p, q));
 	}
-	D[0] = lcm;  // 시작점
+	D[0] = lcm;
 	DFS(0);
-	long mgcd = D[0];  // 최대 공약수
-
-	for (int i = 0; i < n; i++)
+	
+	long mgcd = D[0];
+	for (int i = 1; i < n; i++)
 		mgcd = GCD(mgcd, D[i]);
 	for (int i = 0; i < n; i++)
 		cout << D[i] / mgcd << ' ';
