@@ -4,8 +4,8 @@
 #include <algorithm>
 using namespace std;
 
-int recv[6] = { 0,0,1,1,2,2 };
-int send[6] = { 1,2,0,2,0,1 };
+int send[6] = { 0,0,1,1,2,2 };
+int recv[6] = { 1,2,0,2,0,1 };
 int now[3];
 bool visited[201][201];
 vector<int> ans;
