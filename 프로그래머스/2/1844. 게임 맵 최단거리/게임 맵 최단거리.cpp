@@ -21,9 +21,6 @@ int BFS(int n, int m, vector<vector<int>> maps)
         
         Q.pop();
         
-        if(y == n-1 && x == m-1)
-            return dist[y][x];
-        
         for(int i=0; i<4; i++)
         {
             int ny = y + dy[i];
@@ -31,6 +28,9 @@ int BFS(int n, int m, vector<vector<int>> maps)
             
             if((!(ny>=0 && ny<n && nx>=0 && nx<m)) || maps[ny][nx] == 0)
                 continue;
+            
+            if(ny == n-1 && nx == m-1)
+                return dist[y][x] + 1;
         
             if(!visited[ny][nx])
             {
